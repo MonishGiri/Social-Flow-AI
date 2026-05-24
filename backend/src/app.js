@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 import requestIdMiddleware from "./middlewares/requestId.middleware.js";
 import { env } from "./config/env.js";
 import loggerMiddleware from "./middlewares/logger.middleware.js";
+import uploadRoutes from "./routes/upload.routes.js";
 
 dotenv.config();
 
@@ -36,5 +37,7 @@ await connectDB();
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
+
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/uploads", uploadRoutes);
 app.use(errorMiddleware);
