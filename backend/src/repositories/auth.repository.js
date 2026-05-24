@@ -13,11 +13,11 @@ class AuthRepository {
   }
 
   async findById(userId) {
-  return User.findOne({
-    _id: userId,
-    isDeleted: false
-  }).select("-password");
-}
+    return User.findOne({
+      _id: userId,
+      isDeleted: false
+    }).select("-password");
+  }
 
   async updateLastLogin(userId) {
     return User.findByIdAndUpdate(

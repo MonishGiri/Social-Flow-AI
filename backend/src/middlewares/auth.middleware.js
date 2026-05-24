@@ -1,52 +1,24 @@
 import jwt from "jsonwebtoken";
 import ApiError from "../utils/ApiError.js";
 
-const authMiddleware =
-  (req, res, next) => {
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-    const authHeader =
-      req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return next(new ApiError(401, "Unauthorized"));
+  }
 
-    if (
-      !authHeader ||
-      !authHeader.startsWith(
-        "Bearer "
-      )
-    ) {
-      return next(
-        new ApiError(
-          401,
-          "Unauthorized"
-        )
-      );
-    }
+  const token = authHeader.split(" ")[1];
 
-    const token =
-      authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    try {
+    req.user = decoded;
 
-      const decoded =
-        jwt.verify(
-          token,
-          process.env.JWT_SECRET
-        );
-
-      req.user = decoded;
-
-      next();
-
-    } catch (error) {
-
-      next(
-        new ApiError(
-          401,
-          "Invalid token"
-        )
-      );
-
-    }
-  };
+    next();
+  } catch (error) {
+    next(new ApiError(401, "Invalid token"));
+  }
+};
 
 export default authMiddleware;
-

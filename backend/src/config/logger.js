@@ -4,10 +4,7 @@ const logger = pino({
   level: process.env.LOG_LEVEL || "info",
 
   redact: {
-    paths: [
-      "req.body.password",
-      "req.headers.authorization"
-    ],
+    paths: ["req.body.password", "req.headers.authorization"],
     censor: "***REDACTED***"
   },
 

@@ -1,18 +1,9 @@
 import crypto from "crypto";
 
-const requestIdMiddleware = (
-  req,
-  res,
-  next
-) => {
+const requestIdMiddleware = (req, res, next) => {
+  req.requestId = crypto.randomUUID();
 
-  req.requestId =
-    crypto.randomUUID();
-
-  res.setHeader(
-    "X-Request-Id",
-    req.requestId
-  );
+  res.setHeader("X-Request-Id", req.requestId);
 
   next();
 };
